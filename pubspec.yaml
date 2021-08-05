@@ -1,7 +1,6 @@
 name: chatwoot_flutter_webview
 description: A new Flutter project.
 version: 0.0.1
-homepage:
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -11,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   webviewx: ^0.1.0
-
 
 dev_dependencies:
   flutter_test:

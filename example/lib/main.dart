@@ -28,11 +28,9 @@ class MyHomePage extends StatelessWidget {
         title: Text('Chatwoot Example'),
       ),
       body: ChatwootWebView(
-        websiteToken: 'hwToqmJaQkD5Zp6aCkd5ZHyM',
-        email: 'yourmail@gmail.com',
+        websiteToken: 'website-token',
+        email: 'your-mail@gmail.com',
         name: 'Your Name',
-        startExpanded: true,
-        popout: true,
       ),
     );
   }

@@ -1,42 +1,39 @@
 library chatwoot_flutter_webview;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webviewx/webviewx.dart';
 
-class ChatwootWebView extends StatefulWidget {
+class ChatwootWebView extends StatelessWidget {
   final String? email;
   final String? name;
   final String baseUrl;
-  final bool popout;
-  final bool startExpanded;
   final String websiteToken;
+  final void Function(String error)? onError;
 
   const ChatwootWebView({
     required this.websiteToken,
-    this.baseUrl = 'https://app.chatwoot.com',
-    this.popout = false,
-    this.startExpanded = false,
+    this.onError,
     this.name,
     this.email,
+    this.baseUrl = 'https://app.chatwoot.com',
     Key? key,
   }) : super(key: key);
 
   @override
-  ChatwootWebViewState createState() => ChatwootWebViewState();
-}
+  Widget build(BuildContext context) => WebViewX(
+        initialContent: baseUrl,
+        initialSourceType: SourceType.URL,
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebResourceError: (error) => onError?.call(
+          error.description,
+        ),
+        onWebViewCreated: (controller) {
+          controller.loadContent(_html, SourceType.HTML);
+        },
+      );
 
-class ChatwootWebViewState extends State<ChatwootWebView> {
-  @override
-  Widget build(BuildContext context) {
-    return WebViewX(
-      initialContent: _html,
-      initialSourceType: SourceType.HTML,
-      javascriptMode: JavascriptMode.unrestricted,
-    );
-  }
-
-  String get _html {
-    return '''
+  String get _html => '''
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,24 +43,24 @@ class ChatwootWebViewState extends State<ChatwootWebView> {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body bgColor="#FFF">
       <script>
         (function(d,t) {
-          var BASE_URL="${widget.baseUrl}";
+          var BASE_URL="$baseUrl";
           var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
           g.src=BASE_URL+"/packs/js/sdk.js";
           s.parentNode.insertBefore(g,s);
           g.onload=function(){
             window.addEventListener('chatwoot:ready', function () {
-                window.\$chatwoot.setUser('${widget.email}', {
-                    email: '${widget.email}',
-                    name: '${widget.name}'
+                window.\$chatwoot.setUser('$email', {
+                    email: '$email',
+                    name: '$name'
                 });
-                ${widget.startExpanded ? 'window.\$chatwoot.toggle();' : ''}
+                window.\$chatwoot.toggle();
             });
-            window.chatwootSettings = { showPopoutButton: ${widget.popout ? 'true' : 'false'}}
+            window.chatwootSettings = { showPopoutButton: true }
             window.chatwootSDK.run({
-              websiteToken: '${widget.websiteToken}',
+              websiteToken: '$websiteToken',
               baseUrl: BASE_URL
             })
           }
@@ -72,5 +69,4 @@ class ChatwootWebViewState extends State<ChatwootWebView> {
 </body>
 </html>
 ''';
-  }
 }
