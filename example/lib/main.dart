@@ -23,6 +23,8 @@ class ChatwootDemoPage extends StatelessWidget {
         title: Text('Chatwoot Example'),
       ),
       body: ChatwootWebView(
+        user: 'user-ident'
+        hash: 'identifier hash'
         websiteToken: 'website-token',
         email: 'your-mail@gmail.com',
         name: 'Your Name',

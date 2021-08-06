@@ -5,24 +5,30 @@ import 'package:flutter/material.dart';
 import 'package:webviewx/webviewx.dart';
 
 class ChatwootWebView extends StatelessWidget {
-  final String? email;
-  final String? name;
   final String baseUrl;
+  final String locale;
+  final String user;
   final String websiteToken;
+  final String? email;
+  final String? hash;
+  final String? name;
   final void Function(String error)? onError;
 
   const ChatwootWebView({
     required this.websiteToken,
+    required this.user,
+    this.locale = 'en',
     this.onError,
     this.name,
     this.email,
+    this.hash,
     this.baseUrl = 'https://app.chatwoot.com',
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => WebViewX(
-        initialContent: baseUrl,
+        // initialContent: baseUrl,
         initialSourceType: SourceType.URL,
         javascriptMode: JavascriptMode.unrestricted,
         onWebResourceError: (error) => onError?.call(
@@ -52,9 +58,10 @@ class ChatwootWebView extends StatelessWidget {
           s.parentNode.insertBefore(g,s);
           g.onload=function(){
             window.addEventListener('chatwoot:ready', function () {
-                window.\$chatwoot.setUser('$email', {
-                    email: '$email',
-                    name: '$name'
+                window.\$chatwoot.setUser('$user', {
+                    ${email == null ? '': "email: '$email',"}
+                    ${name == null ? '': "name: '$name',"}
+                    ${hash == null ? '': "identifier_hash: '$hash'"}
                 });
                 window.\$chatwoot.toggle();
             });

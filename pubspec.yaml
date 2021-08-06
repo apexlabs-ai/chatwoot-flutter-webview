@@ -1,7 +1,7 @@
 name: chatwoot_flutter_webview
-description: A new Flutter project.
+description: A WebView wrapper for chatwoot.com chat widget
 version: 0.0.1
-
+repository: https://github.com/apexlabs-ai/chatwoot-flutter-webview
 environment:
   sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0"
